@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أراضينا - مؤسسة موافي للتنمية الزراعية</title>
+    <title>مؤسسة موافي للتنمية الزراعية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
@@ -16,40 +16,11 @@
             padding: 40px 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        header h1 { font-size: 2.3rem; margin-bottom: 10px; font-weight: 900; }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 900; }
         header p { font-size: 1.1rem; opacity: 0.9; }
 
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .section-title { text-align: center; margin-bottom: 30px; color: #1b4d3e; font-size: 1.8rem; font-weight: 700; }
-
-        /* شريط اختيار المحافظات */
-        .governorates-bar {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 35px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            border: 1px solid #d5e8d4;
-        }
-        .governorates-bar label {
-            font-weight: bold;
-            color: #1b4d3e;
-            font-size: 1.1rem;
-        }
-        .governorates-bar select {
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #b5d5b3;
-            font-size: 1rem;
-            background: #f9fbf9;
-            color: #333;
-            flex-grow: 1;
-            cursor: pointer;
-        }
 
         /* لوحة التحكم السرية */
         #adminSection {
@@ -68,7 +39,7 @@
         .admin-content-area { display: none; }
         .admin-form-group { margin-bottom: 15px; }
         .admin-form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1b4d3e; }
-        .admin-form-group input, .admin-form-group textarea, .admin-form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+        .admin-form-group input, .admin-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
         
         /* تصميم صندوق رفع الصورة المباشر */
         .image-upload-box {
@@ -108,10 +79,8 @@
             flex-direction: column;
         }
         .product-card:hover { transform: translateY(-8px); }
-        .product-image-container { width: 100%; height: 200px; background: #e8f5e9; position: relative; }
+        .product-image-container { width: 100%; height: 200px; background: #e8f5e9; }
         .product-image-container img { width: 100%; height: 100%; object-fit: cover; }
-        .gov-badge { position: absolute; top: 10px; right: 10px; background: rgba(27, 77, 62, 0.9); color: white; padding: 4px 10px; font-size: 0.8rem; border-radius: 6px; font-weight: bold; }
-        
         .product-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-title { font-size: 1.3rem; color: #1b4d3e; margin-bottom: 10px; font-weight: 700; }
         .product-price { font-size: 1.25rem; color: #2e7d32; font-weight: 900; margin-bottom: 12px; }
@@ -135,7 +104,7 @@
 <body>
 
     <header>
-        <h1>منصة أراضينا - مؤسسة موافي</h1>
+        <h1>مؤسسة موافي للتنمية الزراعية</h1>
         <p>بوابتك المتقدمة لأفضل المنتجات الزراعية والمستلزمات الاحترافية</p>
     </header>
 
@@ -150,7 +119,7 @@
             </div>
 
             <div id="adminContentArea" class="admin-content-area">
-                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات والمحافظات (كاميرا / استوديو)</h3>
+                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (ضغط ذكي للصور ومساحة أكبر)</h3>
                 
                 <div class="admin-form-group">
                     <label>اسم المنتج:</label>
@@ -162,26 +131,7 @@
                     <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شيكارة">
                 </div>
 
-                <div class="admin-form-group">
-                    <label>اختر المحافظة:</label>
-                    <select id="newGov">
-                        <option value="جميع المحافظات">جميع المحافظات (عام)</option>
-                        <option value="القاهرة">القاهرة</option>
-                        <option value="الجيزة">الجيزة</option>
-                        <option value="الإسكندرية">الإسكندرية</option>
-                        <option value="البحيرة">البحيرة</option>
-                        <option value="الغربية">الغربية</option>
-                        <option value="الدقهلية">الدقهلية</option>
-                        <option value="الشرقية">الشرقية</option>
-                        <option value="المنوفية">المنوفية</option>
-                        <option value="كفر الشيخ">كفر الشيخ</option>
-                        <option value="أسيوط">أسيوط</option>
-                        <option value="سوهاج">سوهاج</option>
-                        <option value="المنيا">المنيا</option>
-                    </select>
-                </div>
-
-                <!-- خانة رفع الصورة المباشرة -->
+                <!-- خانة رفع الصورة مع الضغط التلقائي -->
                 <div class="admin-form-group">
                     <label>صورة المنتج:</label>
                     <div class="image-upload-box" onclick="document.getElementById('productImageFile').click()">
@@ -209,27 +159,7 @@
             </div>
         </div>
 
-        <!-- شريط فلترة المحافظات للعملاء -->
-        <div class="governorates-bar">
-            <label for="govFilter">📍 تصفية المنتجات حسب المحافظة:</label>
-            <select id="govFilter" onchange="filterProducts()">
-                <option value="ALL">عرض كل المحافظات</option>
-                <option value="القاهرة">القاهرة</option>
-                <option value="الجيزة">الجيزة</option>
-                <option value="الإسكندرية">الإسكندرية</option>
-                <option value="البحيرة">البحيرة</option>
-                <option value="الغربية">الغربية</option>
-                <option value="الدقهلية">الدقهلية</option>
-                <option value="الشرقية">الشرقية</option>
-                <option value="المنوفية">المنوفية</option>
-                <option value="كفر الشيخ">كفر الشيخ</option>
-                <option value="أسيوط">أسيوط</option>
-                <option value="سوهاج">سوهاج</option>
-                <option value="المنيا">المنيا</option>
-            </select>
-        </div>
-
-        <h2 class="section-title">قائمة المنتجات والمستلزمات الزراعية</h2>
+        <h2 class="section-title">قائمة المنتجات والمواصفات</h2>
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
@@ -246,20 +176,18 @@
     </div>
 
     <footer>
-        <p>جميع الحقوق محفوظة © 2026 - منصة أراضينا (مؤسسة موافي للتنمية الزراعية) | تواصل معنا: 01015421512</p>
+        <p>جميع الحقوق محفوظة © 2026 - مؤسسة موافي للتنمية الزراعية | تواصل معنا: 01015421512</p>
     </footer>
 
     <script>
         const ADMIN_PASS = "mowafy2026";
-        let capturedImageData = "";
+        let capturedImageData = ""; 
         
-        // المنتجات الأساسية المشتركة لكل الزوار
-        const defaultProducts = [
+        let products = JSON.parse(localStorage.getItem('mowafy_products')) || [
             {
                 id: 1,
                 title: "سماد مركب عالي النقاء (N-P-K)",
                 price: "450 ج.م / شيكارة",
-                gov: "البحيرة",
                 img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br><strong>الاستخدام:</strong> مناسب لجميع المحاصيل بمعدل 5 كجم للفدان.",
                 fullDesc: "<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية."
@@ -268,51 +196,63 @@
                 id: 2,
                 title: "مبيد ومخصب عضوي آمن",
                 price: "280 ج.م / لتر",
-                gov: "الإسكندرية",
                 img: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين المناعة.<br><strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء.",
                 fullDesc: "<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور."
             }
         ];
 
-        // جلب المنتجات المخزنة أو استخدام الافتراضية للجميع
-        let products = JSON.parse(localStorage.getItem('mowafy_global_products'));
-        if (!products) {
-            products = defaultProducts;
-            localStorage.setItem('mowafy_global_products', JSON.stringify(products));
-        }
-
+        // دالة ضغط الصورة أوتوماتيكياً لتوفير مساحة هائلة في الذاكرة المؤقتة
         function processImageFile(event) {
             const file = event.target.files[0];
             if (file) {
-                document.getElementById('uploadStatusText').innerText = "✅ تم تحميل الصورة: " + file.name;
+                document.getElementById('uploadStatusText').innerText = "⏳ جاري ضغط وتحميل الصورة...";
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    capturedImageData = e.target.result;
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        // تصغير أبعاد الصورة لضمان خفة الحجم وعدم امتلاء الذاكرة
+                        const MAX_WIDTH = 500;
+                        const MAX_HEIGHT = 500;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // تحويل الصورة بصيغة مضغوطة
+                        capturedImageData = canvas.toDataURL('image/jpeg', 0.7);
+                        document.getElementById('uploadStatusText').innerText = "✅ تم ضغط الصورة وجاهزة للنشر بنجاح!";
+                    }
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function renderStore(filteredGov = "ALL") {
+        function renderStore() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
-            
-            const filteredProducts = products.filter(p => {
-                if(filteredGov === "ALL") return true;
-                return p.gov === filteredGov || p.gov === "جميع المحافظات";
-            });
-
-            if(filteredProducts.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666; font-size: 1.2rem; padding: 40px;">لا توجد منتجات مضافة في هذه المحافظة حالياً.</p>';
-                return;
-            }
-
-            filteredProducts.forEach(p => {
+            products.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card">
                         <div class="product-image-container">
-                            <span class="gov-badge">${p.gov || 'عام'}</span>
                             <img src="${p.img}" alt="${p.title}">
                         </div>
                         <div class="product-content">
@@ -321,7 +261,7 @@
                             <p class="product-specs">${p.shortDesc}</p>
                             <div class="card-buttons">
                                 <button class="details-btn" onclick="openModal('${p.title}', '${p.price}', '${p.img}', '${p.fullDesc.replace(/'/g, "\\'")}')">التفاصيل</button>
-                                <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(p.title)}%20(محافظة:%20${p.gov || 'عام'})" target="_blank" class="whatsapp-btn">اطلب الآن</a>
+                                <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(p.title)}" target="_blank" class="whatsapp-btn">اطلب الآن</a>
                             </div>
                         </div>
                     </div>
@@ -329,14 +269,9 @@
             });
         }
 
-        function filterProducts() {
-            const selectedGov = document.getElementById('govFilter').value;
-            renderStore(selectedGov);
-        }
-
         window.onload = function() {
             renderStore();
-            if(window.location.hash === "#admin" || window.location.search.includes("admin")) {
+            if(window.location.hash === "#admin") {
                 document.getElementById('adminSection').style.display = 'block';
             }
         };
@@ -357,8 +292,9 @@
             list.innerHTML = '';
             products.forEach((p, idx) => {
                 list.innerHTML += `
+                    man
                     <div class="admin-row-item">
-                        <span><strong>${p.title}</strong> (${p.gov || 'عام'})</span>
+                        <span>${p.title} (${p.price})</span>
                         <button class="delete-btn" onclick="deleteProd(${idx})">حذف</button>
                     </div>
                 `;
@@ -368,10 +304,9 @@
         function addNewProductItem() {
             const title = document.getElementById('newTitle').value;
             const price = document.getElementById('newPrice').value;
-            const gov = document.getElementById('newGov').value;
             
             if(!title || !price || !capturedImageData) {
-                alert('الرجاء إدخال اسم المنتج، السعر، واختيار صورة من الكاميرا أو الاستوديو!');
+                alert('الرجاء إدخال اسم المنتج، السعر، واختيار صورة المنتج!');
                 return;
             }
 
@@ -379,13 +314,18 @@
                 id: Date.now(),
                 title: title,
                 price: price,
-                gov: gov,
                 img: capturedImageData,
                 shortDesc: document.getElementById('newShortDesc').value || `<strong>المواصفات:</strong> ${title}`,
                 fullDesc: document.getElementById('newFullDesc').value || `<strong>التفاصيل الكاملة:</strong> ${title}`
             });
 
-            localStorage.setItem('mowafy_global_products', JSON.stringify(products));
+            try {
+                localStorage.setItem('mowafy_products', JSON.stringify(products));
+            } catch (e) {
+                alert('عذراً، الذاكرة المؤقتة امتلت تماماً. يرجى حذف بعض المنتجات القديمة.');
+                products.pop();
+                return;
+            }
             
             // تصفير الحقول
             document.getElementById('newTitle').value = '';
@@ -396,4 +336,30 @@
             capturedImageData = "";
             document.getElementById('uploadStatusText').innerText = "📷 اضغط هنا لالتقاط صورة بالكاميرا أو اختيارها من الاستوديو";
 
-...
+            renderStore();
+            loadAdminList();
+            alert('تم نشر المنتج بنجاح وتوفير مساحة هائلة في الذاكرة!');
+        }
+
+        function deleteProd(idx) {
+            if(confirm('متأكد من الحذف؟')) {
+                products.splice(idx, 1);
+                localStorage.setItem('mowafy_products', JSON.stringify(products));
+                renderStore();
+                loadAdminList();
+            }
+        }
+
+        function openModal(title, price, img, desc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalDesc').innerHTML = desc;
+            document.getElementById('modalWhatsapp').href = `https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(title)}`;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+        function closeModalBg(e) { if(e.target.id === 'productModal') closeModal(); }
+    </script>
+</body>
+</html>
