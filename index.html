@@ -6,18 +6,8 @@
     <title>مؤسسة موافي للتنمية الزراعية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        body {
-            background-color: #f4f9f4;
-            color: #333;
-            overflow-x: hidden;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: #f4f9f4; color: #333; overflow-x: hidden; }
 
         header {
             background: linear-gradient(135deg, #1b4d3e, #2e7d32);
@@ -26,223 +16,74 @@
             padding: 40px 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+        header h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 900; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
 
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            font-weight: 900;
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .section-title { text-align: center; margin-bottom: 30px; color: #1b4d3e; font-size: 1.8rem; font-weight: 700; }
+
+        /* لوحة التحكم المخفية تظهر تلقائياً لو الرابط آخره #admin */
+        #adminSection {
+            display: none;
+            background: #ffffff;
+            border: 2px dashed #1b4d3e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
+        .admin-login-box { text-align: center; padding: 20px; }
+        .admin-login-box input { padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; width: 220px; margin-left: 10px; text-align: center; }
+        .admin-login-box button { padding: 10px 20px; background: #1b4d3e; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        .admin-content-area { display: none; }
+        .admin-form-group { margin-bottom: 15px; }
+        .admin-form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1b4d3e; }
+        .admin-form-group input, .admin-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+        .add-product-submit { background-color: #1b4d3e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; }
+        .add-product-submit:hover { background-color: #2e7d32; }
+        
+        .delete-btn { background-color: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
+        .admin-row-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #ddd; }
 
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #1b4d3e;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
+        /* شبكة المنتجات للعملاء */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-bottom: 50px;
         }
-
         .product-card {
             background: #ffffff;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
             border: 1px solid #e0e0e0;
             display: flex;
             flex-direction: column;
         }
+        .product-card:hover { transform: translateY(-8px); }
+        .product-image-container { width: 100%; height: 200px; background: #e8f5e9; }
+        .product-image-container img { width: 100%; height: 100%; object-fit: cover; }
+        .product-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-size: 1.3rem; color: #1b4d3e; margin-bottom: 10px; font-weight: 700; }
+        .product-price { font-size: 1.25rem; color: #2e7d32; font-weight: 900; margin-bottom: 12px; }
+        .product-specs { font-size: 0.95rem; color: #666; margin-bottom: 20px; line-height: 1.6; flex-grow: 1; }
+        .card-buttons { display: flex; gap: 10px; }
+        .details-btn { background-color: #1b4d3e; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; flex: 1; }
+        .whatsapp-btn { background-color: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none; flex: 1; text-align: center; }
 
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(46, 125, 50, 0.2);
-        }
+        /* Modal تفاصيل المنتج */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 15px; left: 20px; font-size: 1.8rem; background: none; border: none; cursor: pointer; color: #999; }
+        .modal-img { width: 100%; height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; }
+        .modal-title { color: #1b4d3e; font-size: 1.6rem; font-weight: 900; margin-bottom: 10px; }
+        .modal-price { font-size: 1.4rem; color: #2e7d32; font-weight: 900; margin-bottom: 15px; }
+        .modal-desc { font-size: 1.05rem; color: #555; line-height: 1.8; margin-bottom: 25px; }
 
-        .product-image-container {
-            width: 100%;
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(45deg, #e8f5e9, #c8e6c9);
-        }
-
-        .product-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-image-container img {
-            transform: scale(1.08);
-        }
-
-        .product-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .product-title {
-            font-size: 1.3rem;
-            color: #1b4d3e;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            color: #2e7d32;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-
-        .product-specs {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        .card-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .details-btn {
-            background-color: #1b4d3e;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            flex: 1;
-            transition: background-color 0.3s ease;
-        }
-
-        .details-btn:hover {
-            background-color: #2e7d32;
-        }
-
-        .whatsapp-btn {
-            background-color: #25d366;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            flex: 1;
-            text-align: center;
-        }
-
-        .whatsapp-btn:hover {
-            background-color: #1ebe5d;
-        }
-
-        /* نافذة تفاصيل المنتج المنبثقة */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: #fff;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 100%;
-            padding: 30px;
-            position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            font-size: 1.8rem;
-            color: #999;
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-weight: bold;
-        }
-
-        .modal-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            color: #1b4d3e;
-            font-size: 1.6rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-
-        .modal-price {
-            font-size: 1.4rem;
-            color: #2e7d32;
-            font-weight: 900;
-            margin-bottom: 15px;
-        }
-
-        .modal-desc {
-            font-size: 1.05rem;
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 25px;
-        }
-
-        footer {
-            background-color: #1b4d3e;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            margin-top: 60px;
-            font-size: 0.95rem;
-        }
+        footer { background-color: #1b4d3e; color: white; text-align: center; padding: 25px; margin-top: 60px; font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -253,25 +94,61 @@
     </header>
 
     <div class="container">
+        
+        <!-- لوحة التحكم السرية (تظهر فقط عند كتابة #admin في الرابط) -->
+        <div id="adminSection">
+            <div id="adminLoginBox" class="admin-login-box">
+                <h3 style="color: #1b4d3e; margin-bottom: 15px;">🔐 لوحة التحكم السرية</h3>
+                <input type="password" id="adminPassInput" placeholder="أدخل كلمة المرور">
+                <button onclick="verifyAdmin()">دخول</button>
+            </div>
+
+            <div id="adminContentArea" class="admin-content-area">
+                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (إضافة وحذف)</h3>
+                <div class="admin-form-group">
+                    <label>اسم المنتج:</label>
+                    <input type="text" id="newTitle" placeholder="مثال: سماد نيتروجيني">
+                </div>
+                <div class="admin-form-group">
+                    <label>السعر (مع الوحدة):</label>
+                    <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شيكارة">
+                </div>
+                <div class="admin-form-group">
+                    <label>رابط الصورة:</label>
+                    <input type="text" id="newImg" placeholder="رابط صورة المنتج">
+                </div>
+                <div class="admin-form-group">
+                    <label>المواصفات المختصرة:</label>
+                    <textarea id="newShortDesc" placeholder="المواصفات..."></textarea>
+                </div>
+                <div class="admin-form-group">
+                    <label>التفاصيل الكاملة:</label>
+                    <textarea id="newFullDesc" placeholder="التفاصيل وطريقة الاستخدام..."></textarea>
+                </div>
+                <button class="add-product-submit" onclick="addProduct()">نشر المنتج فوراً</button>
+
+                <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <h4 style="color: #1b4d3e; margin-bottom: 10px;">المنتجات الحالية:</h4>
+                    <div id="adminProductsList"></div>
+                </div>
+            </div>
+        </div>
+
         <h2 class="section-title">قائمة المنتجات والمواصفات</h2>
         
-        <!-- شبكة المنتجات -->
-        <div class="products-grid" id="productsGrid">
-            <!-- المنتجات بتنزل هنا أوتوماتيك -->
-        </div>
+        <!-- شبكة المنتجات للعملاء -->
+        <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- نافذة عرض التفاصيل المنبثقة -->
-    <div id="productModal" class="modal-overlay" onclick="closeProductModal(event)">
+    <!-- Modal التفاصيل -->
+    <div id="productModal" class="modal-overlay" onclick="closeModalBg(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-modal" onclick="closeModalDirect()">&times;</button>
-            <img id="modalImg" class="modal-img" src="" alt="صورة المنتج">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <img id="modalImg" class="modal-img" src="" alt="صورة">
             <h2 id="modalTitle" class="modal-title"></h2>
             <div id="modalPrice" class="modal-price"></div>
             <p id="modalDesc" class="modal-desc"></p>
-            <a id="modalWhatsapp" href="#" target="_blank" class="whatsapp-btn" style="width: 100%; padding: 14px; font-size: 1.1rem; justify-content: center;">
-                <span>طلب هذا المنتج عبر الواتساب</span>
-            </a>
+            <a id="modalWhatsapp" href="#" target="_blank" class="whatsapp-btn" style="width: 100%; padding: 14px; justify-content: center;">طلب المنتج عبر الواتساب</a>
         </div>
     </div>
 
@@ -280,7 +157,8 @@
     </footer>
 
     <script>
-        // قراءة المنتجات المعروضة
+        const ADMIN_PASS = "mowafy2026";
+        
         let products = JSON.parse(localStorage.getItem('mowafy_products')) || [
             {
                 id: 1,
@@ -289,7 +167,7 @@
                 img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80",
                 fullImg: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br><strong>الاستخدام:</strong> مناسب لجميع المحاصيل بمعدل 5 كجم للفدان.",
-                fullDesc: "<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية.<br><br><strong>طريقة الاستخدام:</strong> مناسب لجميع المحاصيل الحقلية والخضروات بمعدل 5 كجم للفدان رياً مع المياه صباحاً أو قبل الغروب."
+                fullDesc: "<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية."
             },
             {
                 id: 2,
@@ -298,15 +176,14 @@
                 img: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
                 fullImg: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين المناعة.<br><strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء.",
-                fullDesc: "<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور من الأمراض الفطرية.<br><br><strong>طريقة الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء ويرش صباحاً بانتظام للحصول على أفضل نتيجة."
+                fullDesc: "<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور."
             }
         ];
 
-        function renderProducts() {
+        function renderStore() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
-
-            products.forEach((p) => {
+            products.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card">
                         <div class="product-image-container">
@@ -317,7 +194,7 @@
                             <div class="product-price">${p.price}</div>
                             <p class="product-specs">${p.shortDesc}</p>
                             <div class="card-buttons">
-                                <button class="details-btn" onclick="openProductModal('${p.title}', '${p.price}', '${p.fullImg}', '${p.fullDesc.replace(/'/g, "\\'")}')">عرض التفاصيل</button>
+                                <button class="details-btn" onclick="openModal('${p.title}', '${p.price}', '${p.fullImg || p.img}', '${p.fullDesc.replace(/'/g, "\\'")}')">التفاصيل</button>
                                 <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(p.title)}" target="_blank" class="whatsapp-btn">اطلب الآن</a>
                             </div>
                         </div>
@@ -326,31 +203,85 @@
             });
         }
 
-        function openProductModal(title, price, imgSrc, desc) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalPrice').innerText = price;
-            document.getElementById('modalImg').src = imgSrc;
-            document.getElementById('modalDesc').innerHTML = desc;
-            
-            const waUrl = `https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(title)}`;
-            document.getElementById('modalWhatsapp').href = waUrl;
+        // فحص لوحة التحكم عند فتح الرابط بـ #admin
+        window.onload = function() {
+            renderStore();
+            if(window.location.hash === "#admin") {
+                document.getElementById('adminSection').style.display = 'block';
+            }
+        };
 
-            document.getElementById('productModal').style.display = 'flex';
-        }
-
-        function closeModalDirect() {
-            document.getElementById('productModal').style.display = 'none';
-        }
-
-        function closeProductModal(event) {
-            if (event.target.id === 'productModal') {
-                document.getElementById('productModal').style.display = 'none';
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassInput').value;
+            if(pass === ADMIN_PASS) {
+                document.getElementById('adminLoginBox').style.display = 'none';
+                document.getElementById('adminContentArea').style.display = 'block';
+                loadAdminList();
+            } else {
+                alert('كلمة المرور خطأ!');
             }
         }
 
-        window.onload = function() {
-            renderProducts();
-        };
+        function loadAdminList() {
+            const list = document.getElementById('adminProductsList');
+            list.innerHTML = '';
+            products.forEach((p, idx) => {
+                list.innerHTML += `
+                    <div class="admin-row-item">
+                        <span>${p.title} (${p.price})</span>
+                        <button class="delete-btn" onclick="deleteProd(${idx})">حذف</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addProduct() {
+            const title = document.getElementById('newTitle').value;
+            const price = document.getElementById('newPrice').value;
+            const img = document.getElementById('newImg').value;
+            if(!title || !price || !img) {
+                alert('املأ الحقول الأساسية (الاسم، السعر، الصورة)');
+                return;
+            }
+            products.push({
+                id: Date.now(),
+                title: title,
+                price: price,
+                img: img,
+                fullImg: img,
+                shortDesc: document.getElementById('newShortDesc').value || title,
+                fullDesc: document.getElementById('newFullDesc').value || title
+            });
+            localStorage.setItem('mowafy_products', JSON.stringify(products));
+            document.getElementById('newTitle').value = '';
+            document.getElementById('newPrice').value = '';
+            document.getElementById('newImg').value = '';
+            document.getElementById('newShortDesc').value = '';
+            document.getElementById('newFullDesc').value = '';
+            renderStore();
+            loadAdminList();
+            alert('تم نشر المنتج بنجاح!');
+        }
+
+        function deleteProd(idx) {
+            if(confirm('متأكد من الحذف؟')) {
+                products.splice(idx, 1);
+                localStorage.setItem('mowafy_products', JSON.stringify(products));
+                renderStore();
+                loadAdminList();
+            }
+        }
+
+        function openModal(title, price, img, desc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalDesc').innerHTML = desc;
+            document.getElementById('modalWhatsapp').href = `https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(title)}`;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+        function closeModalBg(e) { if(e.target.id === 'productModal') closeModal(); }
     </script>
 </body>
 </html>
