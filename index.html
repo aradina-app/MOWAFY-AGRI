@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤسسة موافي للتنمية الزراعية</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .contact-banner {
+            background-color: #ffeb3b;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        .product-header {
+            background: #e8f5e9;
+            padding: 15px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+        .product-title {
+            font-size: 20px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        .product-price {
+            color: #d32f2f;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .product-body {
+            padding: 20px;
+        }
+        .info-group {
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .info-group span {
+            font-weight: bold;
+            color: #555;
+        }
+        .calculator-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px dashed #4caf50;
+        }
+        .calculator-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .calculator-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .calc-result {
+            font-size: 16px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-top: 5px;
+        }
+        .order-form {
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .order-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        .btn-order {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-order:hover {
+            background-color: #1b5e20;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مؤسسة موافي للتنمية الزراعية</h1>
+        <p>شريكك المعتمد لأجود الأسمدة والتقاوي والمستلزمات الزراعية</p>
+    </header>
+
+    <div class="contact-banner">
+        للطب المباشر والاستفسار: 01015421512
+    </div>
+
+    <div class="container">
+
+        <!-- منتج رقم 1 -->
+        <div class="product-card">
+            <div class="product-header">
+                <div class="product-title">سماد نيتروجيني فائق التركيز (أبوجروب)</div>
+                <div class="product-price">السعر: 450 جنيه / الشكارة (50 كجم)</div>
+            </div>
+            <div class="product-body">
+                <div class="info-group"><span>المواصفات:</span> نترات نشادر نقية 33.5% لتشجيع النمو الخضري السريع.</div>
+                <div class="info-group"><span>طريقة الاستخدام:</span> بمعدل 2 شكارة للفدان رياً مع المياه، ويفضل التقسيم على دفعتين.</div>
+                
+                <!-- حاسبة الكميات -->
+                <div class="calculator-box">
+                    <label>حساب الكمية حسب مساحة أرضك:</label>
+                    <input type="number" id="area1" placeholder="اكتب مساحة أرضك (بالفدان)" oninput="calculate(1, 2, 450)">
+                    <div class="calc-result" id="result1">الاحتياج والإجمالي سيظهر هنا...</div>
+                </div>
+
+                <!-- نموذج الطلب -->
+                <div class="order-form">
+                    <input type="text" id="name1" placeholder="اسمك الثلاثي">
+                    <input type="tel" id="phone1" placeholder="رقم الموبايل للتواصل">
+                    <input type="text" id="address1" placeholder="العنوان بالتفصيل (المحافظة / المركز)">
+                    <button class="btn-order" onclick="sendOrder(1, 'سماد نيتروجيني فائق التركيز')">إرسال الطلب الآن</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- منتج رقم 2 -->
+        <div class="product-card">
+            <div class="product-header">
+                <div class="product-title">مبيد حشري جهازي (لمبداسيد)</div>
+                <div class="product-price">السعر: 120 جنيه / العبوة (لتر)</div>
+            </div>
+            <div class="product-body">
+                <div class="info-group"><span>المواصفات:</span> يقضي تماماً على المن، الحشرات الجناحية، والديدان بكفاءة عالية.</div>
+                <div class="info-group"><span>طريقة الاستخدام:</span> يضاف 50 سم لكل 200 لتر ماء ويرش صباحاً أو قبل الغروب.</div>
+                
+                <!-- حاسبة الكميات -->
+                <div class="calculator-box">
+                    <label>حساب الكمية حسب مساحة أرضك:</label>
+                    <input type="number" id="area2" placeholder="اكتب مساحة أرضك (بالفدان)" oninput="calculate(2, 0.5, 120)">
+                    <div class="calc-result" id="result2">الاحتياج والإجمالي سيظهر هنا...</div>
+                </div>
+
+                <!-- نموذج الطلب -->
+                <div class="order-form">
+                    <input type="text" id="name2" placeholder="اسمك الثلاثي">
+                    <input type="tel" id="phone2" placeholder="رقم الموبايل للتواصل">
+                    <input type="text" id="address2" placeholder="العنوان بالتفصيل (المحافظة / المركز)">
+                    <button class="btn-order" onclick="sendOrder(2, 'مبيد حشري جهازي لمبداسيد')">إرسال الطلب الآن</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة © مؤسسة موافي للتنمية الزراعية 2026 | تليفون: 01015421512
+    </footer>
+
+    <script>
+        // دالة حاسبة الكميات التلقائية
+        function calculate(productId, ratePerFeddan, pricePerUnit) {
+            let feddans = parseFloat(document.getElementById('area' + productId).value);
+            let resultDiv = document.getElementById('result' + productId);
+            
+            if (isNaN(feddans) || feddans <= 0) {
+                resultDiv.innerHTML = "الاحتياج والإجمالي سيظهر هنا...";
+                return;
+            }
+
+            let totalNeeded = Math.ceil(feddans * ratePerFeddan);
+            let totalPrice = totalNeeded * pricePerUnit;
+
+            resultDiv.innerHTML = `الكمية المطلوبة: ${totalNeeded} وحدة | الإجمالي: ${totalPrice} جنيه`;
+        }
+
+        // دالة إرسال الطلب للواتساب تلقائياً
+        function sendOrder(productId, productName) {
+            let name = document.getElementById('name' + productId).value;
+            let phone = document.getElementById('phone' + productId).value;
+            let address = document.getElementById('address' + productId).value;
+            let area = document.getElementById('area' + productId).value;
+            let resultText = document.getElementById('result' + productId).innerText;
+
+            if (!name || !phone || !address || !area) {
+                alert("من فضلك املأ جميع البيانات (الاسم، الموبايل، العنوان، المساحة) قبل الإرسال!");
+                return;
+            }
+
+            let message = `طلب جديد من موقع مؤسسة موافي:%0A` +
+                          `- المنتج: ${productName}%0A` +
+                          `- المساحة: ${area} فدان%0A` +
+                          `- الحساب: ${resultText}%0A` +
+                          `- اسم العميل: ${name}%0A` +
+                          `- التليفون: ${phone}%0A` +
+                          `- العنوان: ${address}`;
+
+            // رقم الواتساب الخاص بالمؤسسة
+            let whatsappUrl = `https://wa.me/201015421512?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
