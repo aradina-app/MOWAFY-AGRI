@@ -22,7 +22,6 @@
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .section-title { text-align: center; margin-bottom: 30px; color: #1b4d3e; font-size: 1.8rem; font-weight: 700; }
 
-        /* لوحة التحكم السرية */
         #adminSection {
             display: none;
             background: #ffffff;
@@ -41,7 +40,6 @@
         .admin-form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1b4d3e; }
         .admin-form-group input, .admin-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
         
-        /* تصميم صندوق رفع الصورة المباشر */
         .image-upload-box {
             background: #e8f5e9;
             border: 2px dashed #2e7d32;
@@ -61,7 +59,6 @@
         .delete-btn { background-color: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
         .admin-row-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #ddd; }
 
-        /* شبكة المنتجات للعملاء */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -89,7 +86,6 @@
         .details-btn { background-color: #1b4d3e; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; flex: 1; }
         .whatsapp-btn { background-color: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-decoration: none; flex: 1; text-align: center; }
 
-        /* Modal تفاصيل المنتج */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
         .modal-content { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; padding: 30px; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-modal { position: absolute; top: 15px; left: 20px; font-size: 1.8rem; background: none; border: none; cursor: pointer; color: #999; }
@@ -119,7 +115,7 @@
             </div>
 
             <div id="adminContentArea" class="admin-content-area">
-                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (ضغط ذكي للصور ومساحة أكبر)</h3>
+                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات المباشرة</h3>
                 
                 <div class="admin-form-group">
                     <label>اسم المنتج:</label>
@@ -131,7 +127,6 @@
                     <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شيكارة">
                 </div>
 
-                <!-- خانة رفع الصورة مع الضغط التلقائي -->
                 <div class="admin-form-group">
                     <label>صورة المنتج:</label>
                     <div class="image-upload-box" onclick="document.getElementById('productImageFile').click()">
@@ -163,7 +158,6 @@
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- Modal التفاصيل -->
     <div id="productModal" class="modal-overlay" onclick="closeModalBg(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="closeModal()">&times;</button>
@@ -202,21 +196,18 @@
             }
         ];
 
-        // دالة ضغط الصورة أوتوماتيكياً لتوفير مساحة هائلة في الذاكرة المؤقتة
         function processImageFile(event) {
             const file = event.target.files[0];
             if (file) {
-                document.getElementById('uploadStatusText').innerText = "⏳ جاري ضغط وتحميل الصورة...";
+                document.getElementById('uploadStatusText').innerText = "⏳ جاري ضغط الصورة...";
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
-                        
-                        // تصغير أبعاد الصورة لضمان خفة الحجم وعدم امتلاء الذاكرة
-                        const MAX_WIDTH = 500;
-                        const MAX_HEIGHT = 500;
+                        const MAX_WIDTH = 400;
+                        const MAX_HEIGHT = 400;
                         let width = img.width;
                         let height = img.height;
 
@@ -235,10 +226,8 @@
                         canvas.width = width;
                         canvas.height = height;
                         ctx.drawImage(img, 0, 0, width, height);
-
-                        // تحويل الصورة بصيغة مضغوطة
-                        capturedImageData = canvas.toDataURL('image/jpeg', 0.7);
-                        document.getElementById('uploadStatusText').innerText = "✅ تم ضغط الصورة وجاهزة للنشر بنجاح!";
+                        capturedImageData = canvas.toDataURL('image/jpeg', 0.6);
+                        document.getElementById('uploadStatusText').innerText = "✅ تمت صياغة الصورة بنجاح!";
                     }
                     img.src = e.target.result;
                 };
@@ -292,7 +281,6 @@
             list.innerHTML = '';
             products.forEach((p, idx) => {
                 list.innerHTML += `
-                    man
                     <div class="admin-row-item">
                         <span>${p.title} (${p.price})</span>
                         <button class="delete-btn" onclick="deleteProd(${idx})">حذف</button>
@@ -306,28 +294,29 @@
             const price = document.getElementById('newPrice').value;
             
             if(!title || !price || !capturedImageData) {
-                alert('الرجاء إدخال اسم المنتج، السعر، واختيار صورة المنتج!');
+                alert('الرجاء إدخال اسم المنتج، السعر، واختيار الصورة!');
                 return;
             }
 
-            products.push({
+            const newProd = {
                 id: Date.now(),
                 title: title,
                 price: price,
                 img: capturedImageData,
                 shortDesc: document.getElementById('newShortDesc').value || `<strong>المواصفات:</strong> ${title}`,
                 fullDesc: document.getElementById('newFullDesc').value || `<strong>التفاصيل الكاملة:</strong> ${title}`
-            });
+            };
+
+            products.push(newProd);
 
             try {
                 localStorage.setItem('mowafy_products', JSON.stringify(products));
             } catch (e) {
-                alert('عذراً، الذاكرة المؤقتة امتلت تماماً. يرجى حذف بعض المنتجات القديمة.');
+                alert('عذراً، مساحة الذاكرة امتلت.');
                 products.pop();
                 return;
             }
             
-            // تصفير الحقول
             document.getElementById('newTitle').value = '';
             document.getElementById('newPrice').value = '';
             document.getElementById('newShortDesc').value = '';
@@ -338,7 +327,7 @@
 
             renderStore();
             loadAdminList();
-            alert('تم نشر المنتج بنجاح وتوفير مساحة هائلة في الذاكرة!');
+            alert('تم نشر المنتج وظهوره على المنصة بنجاح!');
         }
 
         function deleteProd(idx) {
