@@ -4,140 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مؤسسة موافي للتنمية الزراعية</title>
+    <!-- استيراد خط عربي فخم -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', sans-serif;
         }
+
         body {
-            background-color: #f4f7f6;
+            background-color: #f4f9f4;
             color: #333;
+            overflow-x: hidden;
         }
+
+        /* رأس الصفحة */
         header {
-            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            background: linear-gradient(135deg, #1b4d3e, #2e7d32);
             color: white;
-            padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 40px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+
         header h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 900;
         }
+
         header p {
-            font-size: 14px;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
-        .contact-banner {
-            background-color: #ffeb3b;
-            color: #333;
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 16px;
-        }
+
+        /* حاوية المنتجات بنظام الشبكة (Grid) */
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1b4d3e;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* بطاقة المنتج مع خلفية زراعية متحركة وخفيفة */
         .product-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
+            background: #ffffff;
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
             border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
         }
-        .product-header {
-            background: #e8f5e9;
-            padding: 15px;
-            border-bottom: 1px solid #c8e6c9;
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(46, 125, 50, 0.2);
         }
-        .product-title {
-            font-size: 20px;
-            color: #2e7d32;
-            font-weight: bold;
+
+        /* تأثير الخلفية المتحركة الطفيفة بالطراز الزراعي خلف صور المنتجات */
+        .product-image-container {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #e8f5e9, #c8e6c9);
+            background-size: 400% 400%;
+            animation: agriBackgroundMotion 10s ease infinite;
         }
-        .product-price {
-            color: #d32f2f;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 5px;
+
+        @keyframes agriBackgroundMotion {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .product-body {
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.08);
+        }
+
+        /* تفاصيل المنتج */
+        .product-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
-        .info-group {
-            margin-bottom: 12px;
-            font-size: 15px;
+
+        .product-title {
+            font-size: 1.3rem;
+            color: #1b4d3e;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        .info-group span {
-            font-weight: bold;
-            color: #555;
-        }
-        .calculator-box {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border: 1px dashed #4caf50;
-        }
-        .calculator-box label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+
+        .product-price {
+            font-size: 1.25rem;
             color: #2e7d32;
+            font-weight: 900;
+            margin-bottom: 12px;
         }
-        .calculator-box input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            margin-bottom: 10px;
+
+        .product-specs {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
         }
-        .calc-result {
-            font-size: 16px;
-            font-weight: bold;
-            color: #d32f2f;
-            margin-top: 5px;
-        }
-        .order-form {
-            margin-top: 15px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-        .order-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 15px;
-        }
-        .btn-order {
-            background-color: #2e7d32;
+
+        /* زر الشراء عبر الواتساب */
+        .whatsapp-btn {
+            background-color: #25d366;
             color: white;
             border: none;
-            width: 100%;
             padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
         }
-        .btn-order:hover {
-            background-color: #1b5e20;
+
+        .whatsapp-btn:hover {
+            background-color: #1ebe5d;
         }
+
+        /* تذييل الصفحة */
         footer {
+            background-color: #1b4d3e;
+            color: white;
             text-align: center;
-            padding: 20px;
-            color: #777;
-            font-size: 13px;
+            padding: 25px;
+            margin-top: 60px;
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -145,118 +174,74 @@
 
     <header>
         <h1>مؤسسة موافي للتنمية الزراعية</h1>
-        <p>شريكك المعتمد لأجود الأسمدة والتقاوي والمستلزمات الزراعية</p>
+        <p>بوابتك المتقدمة لأفضل المنتجات الزراعية والمستلزمات الاحترافية</p>
     </header>
 
-    <div class="contact-banner">
-        للطب المباشر والاستفسار: 01015421512
-    </div>
-
     <div class="container">
-
-        <!-- منتج رقم 1 -->
-        <div class="product-card">
-            <div class="product-header">
-                <div class="product-title">سماد نيتروجيني فائق التركيز (أبوجروب)</div>
-                <div class="product-price">السعر: 450 جنيه / الشكارة (50 كجم)</div>
-            </div>
-            <div class="product-body">
-                <div class="info-group"><span>المواصفات:</span> نترات نشادر نقية 33.5% لتشجيع النمو الخضري السريع.</div>
-                <div class="info-group"><span>طريقة الاستخدام:</span> بمعدل 2 شكارة للفدان رياً مع المياه، ويفضل التقسيم على دفعتين.</div>
-                
-                <!-- حاسبة الكميات -->
-                <div class="calculator-box">
-                    <label>حساب الكمية حسب مساحة أرضك:</label>
-                    <input type="number" id="area1" placeholder="اكتب مساحة أرضك (بالفدان)" oninput="calculate(1, 2, 450)">
-                    <div class="calc-result" id="result1">الاحتياج والإجمالي سيظهر هنا...</div>
+        <h2 class="section-title">قائمة المنتجات والمواصفات</h2>
+        
+        <div class="products-grid">
+            
+            <!-- المنتج الأول -->
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80" alt="سماد عالي النقاء">
                 </div>
-
-                <!-- نموذج الطلب -->
-                <div class="order-form">
-                    <input type="text" id="name1" placeholder="اسمك الثلاثي">
-                    <input type="tel" id="phone1" placeholder="رقم الموبايل للتواصل">
-                    <input type="text" id="address1" placeholder="العنوان بالتفصيل (المحافظة / المركز)">
-                    <button class="btn-order" onclick="sendOrder(1, 'سماد نيتروجيني فائق التركيز')">إرسال الطلب الآن</button>
+                <div class="product-content">
+                    <h3 class="product-title">سماد مركب عالي النقاء (N-P-K)</h3>
+                    <div class="product-price">450 ج.م / شيكارة</div>
+                    <p class="product-specs">
+                        <strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br>
+                        <strong>الاستخدام:</strong> مناسب لجميع المحاصيل الحقلية والخضروات بمعدل 5 كجم للفدان.
+                    </p>
+                    <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20سماد%20مركب%20عالي%20النقاء" target="_blank" class="whatsapp-btn">
+                        <span>اطلب عبر الواتساب</span>
+                    </a>
                 </div>
             </div>
+
+            <!-- المنتج الثاني -->
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80" alt="مبيد حشري عضوي">
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">مبيد ومخصب عضوي آمن</h3>
+                    <div class="product-price">280 ج.م / لتر</div>
+                    <p class="product-specs">
+                        <strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين مناعة النبات.<br>
+                        <strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء ويرش صباحاً.
+                    </p>
+                    <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20مبيد%20ومخصب%20عضوي%20آمن" target="_blank" class="whatsapp-btn">
+                        <span>اطلب عبر الواتساب</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- المنتج الثالث -->
+            <div class="product-card">
+                <div class="product-image-container">
+                    <img src="https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=600&q=80" alt="تقاوي محسینة">
+                </div>
+                <div class="product-content">
+                    <h3 class="product-title">تقاوي ذرة صفراء هجين</h3>
+                    <div class="product-price">600 ج.م / شكارة</div>
+                    <p class="product-specs">
+                        <strong>المواصفات:</strong> تقاوي معتمدة عالية الإنتاجية ومقاومة للرقاد والأمراض.<br>
+                        <strong>الاستخدام:</strong> تزرع في العروة الصيفية بمعدل 10 كجم للفدان.
+                    </p>
+                    <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20تقاوي%20ذرة%20صفراء%20هجين" target="_blank" class="whatsapp-btn">
+                        <span>اطلب عبر الواتساب</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
-
-        <!-- منتج رقم 2 -->
-        <div class="product-card">
-            <div class="product-header">
-                <div class="product-title">مبيد حشري جهازي (لمبداسيد)</div>
-                <div class="product-price">السعر: 120 جنيه / العبوة (لتر)</div>
-            </div>
-            <div class="product-body">
-                <div class="info-group"><span>المواصفات:</span> يقضي تماماً على المن، الحشرات الجناحية، والديدان بكفاءة عالية.</div>
-                <div class="info-group"><span>طريقة الاستخدام:</span> يضاف 50 سم لكل 200 لتر ماء ويرش صباحاً أو قبل الغروب.</div>
-                
-                <!-- حاسبة الكميات -->
-                <div class="calculator-box">
-                    <label>حساب الكمية حسب مساحة أرضك:</label>
-                    <input type="number" id="area2" placeholder="اكتب مساحة أرضك (بالفدان)" oninput="calculate(2, 0.5, 120)">
-                    <div class="calc-result" id="result2">الاحتياج والإجمالي سيظهر هنا...</div>
-                </div>
-
-                <!-- نموذج الطلب -->
-                <div class="order-form">
-                    <input type="text" id="name2" placeholder="اسمك الثلاثي">
-                    <input type="tel" id="phone2" placeholder="رقم الموبايل للتواصل">
-                    <input type="text" id="address2" placeholder="العنوان بالتفصيل (المحافظة / المركز)">
-                    <button class="btn-order" onclick="sendOrder(2, 'مبيد حشري جهازي لمبداسيد')">إرسال الطلب الآن</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <footer>
-        جميع الحقوق محفوظة © مؤسسة موافي للتنمية الزراعية 2026 | تليفون: 01015421512
+        <p>جميع الحقوق محفوظة © 2026 - مؤسسة موافي للتنمية الزراعية | تواصل معنا: 01015421512</p>
     </footer>
-
-    <script>
-        // دالة حاسبة الكميات التلقائية
-        function calculate(productId, ratePerFeddan, pricePerUnit) {
-            let feddans = parseFloat(document.getElementById('area' + productId).value);
-            let resultDiv = document.getElementById('result' + productId);
-            
-            if (isNaN(feddans) || feddans <= 0) {
-                resultDiv.innerHTML = "الاحتياج والإجمالي سيظهر هنا...";
-                return;
-            }
-
-            let totalNeeded = Math.ceil(feddans * ratePerFeddan);
-            let totalPrice = totalNeeded * pricePerUnit;
-
-            resultDiv.innerHTML = `الكمية المطلوبة: ${totalNeeded} وحدة | الإجمالي: ${totalPrice} جنيه`;
-        }
-
-        // دالة إرسال الطلب للواتساب تلقائياً
-        function sendOrder(productId, productName) {
-            let name = document.getElementById('name' + productId).value;
-            let phone = document.getElementById('phone' + productId).value;
-            let address = document.getElementById('address' + productId).value;
-            let area = document.getElementById('area' + productId).value;
-            let resultText = document.getElementById('result' + productId).innerText;
-
-            if (!name || !phone || !address || !area) {
-                alert("من فضلك املأ جميع البيانات (الاسم، الموبايل، العنوان، المساحة) قبل الإرسال!");
-                return;
-            }
-
-            let message = `طلب جديد من موقع مؤسسة موافي:%0A` +
-                          `- المنتج: ${productName}%0A` +
-                          `- المساحة: ${area} فدان%0A` +
-                          `- الحساب: ${resultText}%0A` +
-                          `- اسم العميل: ${name}%0A` +
-                          `- التليفون: ${phone}%0A` +
-                          `- العنوان: ${address}`;
-
-            // رقم الواتساب الخاص بالمؤسسة
-            let whatsappUrl = `https://wa.me/201015421512?text=${message}`;
-            window.open(whatsappUrl, '_blank');
-        }
-    </script>
 
 </body>
 </html>
