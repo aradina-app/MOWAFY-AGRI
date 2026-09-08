@@ -183,6 +183,23 @@
             background-color: #1ebe5d;
         }
 
+        /* زر حذف المنتج (يظهر داخل لوحة التحكم فقط) */
+        .delete-btn {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            display: none; /* مخفي افتراضياً ولا يظهر إلا بعد تسجيل الدخول */
+        }
+        .delete-btn:hover {
+            background-color: #c62828;
+        }
+
         /* نافذة تفاصيل المنتج المنبثقة (Modal) */
         .modal-overlay {
             position: fixed;
@@ -206,14 +223,8 @@
             padding: 30px;
             position: relative;
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            animation: modalScale 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
-        }
-
-        @keyframes modalScale {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .close-modal {
@@ -226,10 +237,6 @@
             background: none;
             border: none;
             font-weight: bold;
-        }
-
-        .close-modal:hover {
-            color: #333;
         }
 
         .modal-img {
@@ -261,7 +268,83 @@
             margin-bottom: 25px;
         }
 
-        /* الحاسبة الزراعية الذكية */
+        /* تصميم لوحة التحكم المخفية (Admin Panel) */
+        .admin-panel {
+            background: #ffffff;
+            border: 2px dashed #1b4d3e;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            display: none; /* مخفية لا تظهر إلا بعد كتابة الباسورد */
+        }
+
+        .admin-panel h3 {
+            color: #1b4d3e;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .admin-form-group {
+            margin-bottom: 15px;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .admin-form-group input, .admin-form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .add-product-submit {
+            background-color: #1b4d3e;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .add-product-submit:hover {
+            background-color: #2e7d32;
+        }
+
+        /* شاشة تسجيل الدخول للوحة التحكم */
+        .login-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-box input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-left: 10px;
+            width: 200px;
+        }
+
+        .login-box button {
+            padding: 8px 15px;
+            background: #1b4d3e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* الحاسبة الزراعية */
         .calculator-section {
             background: #ffffff;
             border-radius: 20px;
@@ -287,7 +370,6 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 700;
-            color: #333;
         }
 
         .form-group select, .form-group input {
@@ -296,12 +378,6 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .form-group select:focus, .form-group input:focus {
-            border-color: #2e7d32;
         }
 
         .calc-result {
@@ -335,67 +411,45 @@
     </header>
 
     <div class="container">
+        
+        <!-- زر تسجيل الدخول السري للوحة التحكم (موجود في أعلى الصفحة بشكل هادئ) -->
+        <div class="login-box" id="loginBoxSection">
+            <span style="font-size: 0.9rem; color: #1b4d3e; font-weight: bold;">لوحة التحكم الإدارية: </span>
+            <input type="password" id="adminPasswordInput" placeholder="أدخل كلمة المرور">
+            <button onclick="checkAdminLogin()">دخول</button>
+        </div>
+
+        <!-- لوحة التحكم لإضافة منتج جديد (تظهر فقط بعد إدخال الباسورد الصحيح) -->
+        <div id="adminPanel" class="admin-panel">
+            <h3>➕ إضافة منتج جديد للمتجر</h3>
+            <div class="admin-form-group">
+                <label>اسم المنتج:</label>
+                <input type="text" id="newTitle" placeholder="مثال: سماد نترات الفسفور">
+            </div>
+            <div class="admin-form-group">
+                <label>السعر (مع الوحدة):</label>
+                <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شكارة">
+            </div>
+            <div class="admin-form-group">
+                <label>رابط الصورة:</label>
+                <input type="text" id="newImg" placeholder="رابط صورة المنتج من الإنترنت">
+            </div>
+            <div class="admin-form-group">
+                <label>المواصفات السريعة (تظهر في الكارت):</label>
+                <textarea id="newShortDesc" placeholder="المواصفات المختصرة..."></textarea>
+            </div>
+            <div class="admin-form-group">
+                <label>التفاصيل الكاملة (تظهر عند عرض التفاصيل):</label>
+                <textarea id="newFullDesc" placeholder="التفاصيل وطريقة الاستخدام الكاملة..."></textarea>
+            </div>
+            <button class="add-product-submit" onclick="addNewProduct()">حفظ ونشر المنتج فوراً</button>
+        </div>
+
         <h2 class="section-title">قائمة المنتجات والمواصفات</h2>
         
-        <div class="products-grid">
-            
-            <!-- المنتج الأول -->
-            <div class="product-card">
-                <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80" alt="سماد عالي النقاء">
-                </div>
-                <div class="product-content">
-                    <h3 class="product-title">سماد مركب عالي النقاء (N-P-K)</h3>
-                    <div class="product-price">450 ج.م / شيكارة</div>
-                    <p class="product-specs">
-                        <strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br>
-                        <strong>الاستخدام:</strong> مناسب لجميع المحاصيل بمعدل 5 كجم للفدان.
-                    </p>
-                    <div class="card-buttons">
-                        <button class="details-btn" onclick="openProductModal('سماد مركب عالي النقاء (N-P-K)', '450 ج.م / شيكارة', 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80', '<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية.<br><br><strong>طريقة الاستخدام:</strong> مناسب لجميع المحاصيل الحقلية والخضروات بمعدل 5 كجم للفدان رياً مع المياه صباحاً أو قبل الغروب.')">عرض التفاصيل</button>
-                        <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20سماد%20مركب%20عالي%20النقاء" target="_blank" class="whatsapp-btn">اطلب الآن</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- المنتج الثاني -->
-            <div class="product-card">
-                <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80" alt="مبيد حشري عضوي">
-                </div>
-                <div class="product-content">
-                    <h3 class="product-title">مبيد ومخصب عضوي آمن</h3>
-                    <div class="product-price">280 ج.م / لتر</div>
-                    <p class="product-specs">
-                        <strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين المناعة.<br>
-                        <strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء.
-                    </p>
-                    <div class="card-buttons">
-                        <button class="details-btn" onclick="openProductModal('مبيد ومخصب عضوي آمن', '280 ج.م / لتر', 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80', '<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور من الأمراض الفطرية.<br><br><strong>طريقة الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء ويرش صباحاً بانتظام للحصول على أفضل نتيجة.')">عرض التفاصيل</button>
-                        <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20مبيد%20ومخصب%20عضوي%20آمن" target="_blank" class="whatsapp-btn">اطلب الآن</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- المنتج الثالث -->
-            <div class="product-card">
-                <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=600&q=80" alt="تقاوي محسنة">
-                </div>
-                <div class="product-content">
-                    <h3 class="product-title">تقاوي ذرة صفراء هجين</h3>
-                    <div class="product-price">600 ج.م / شكارة</div>
-                    <p class="product-specs">
-                        <strong>المواصفات:</strong> تقاوي معتمدة عالية الإنتاجية ومقاومة للرقاد.<br>
-                        <strong>الاستخدام:</strong> تزرع بمعدل 10 كجم للفدان.
-                    </p>
-                    <div class="card-buttons">
-                        <button class="details-btn" onclick="openProductModal('تقاوي ذرة صفراء هجين', '600 ج.م / شكارة', 'https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=800&q=80', '<strong>التفاصيل الكاملة:</strong> تقاوي معتمدة عالية الإنتاجية ومقاومة للرقاد والأمراض الفطرية لضمان محصول وفيراً.<br><br><strong>طريقة الاستخدام:</strong> تزرع في العروة الصيفية بمعدل 10 كجم للفدان في خطوط منظمة مع الري المنتظم.')">عرض التفاصيل</button>
-                        <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20تقاوي%20ذرة%20صفراء%20هجين" target="_blank" class="whatsapp-btn">اطلب الآن</a>
-                    </div>
-                </div>
-            </div>
-
+        <!-- شبكة المنتجات (يتم تحميل المنتجات هنا تلقائياً) -->
+        <div class="products-grid" id="productsGrid">
+            <!-- المنتجات بتنزل هنا -->
         </div>
 
         <!-- حاسبة الاحتياجات الزراعية الذكية -->
@@ -404,9 +458,7 @@
             <div class="form-group">
                 <label for="productSelect">اختر المنتج المراد حسابه:</label>
                 <select id="productSelect">
-                    <option value="450">سماد مركب عالي النقاء (N-P-K) - 450 ج.م / شيكارة</option>
-                    <option value="280">مبيد ومخصب عضوي آمن - 280 ج.م / لتر</option>
-                    <option value="600">تقاوي ذرة صفراء هجين - 600 ج.م / شكارة</option>
+                    <!-- خيارات الحاسبة -->
                 </select>
             </div>
 
@@ -415,14 +467,14 @@
                 <input type="number" id="landArea" placeholder="مثال: 5" min="1" value="1">
             </div>
 
-            <button class="whatsapp-btn" onclick="calculateNeeds()" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 1.1rem;">احسب الكمية والتكلفة</button>
+            <button class="whatsapp-btn" onclick="calculateNeeds()" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 1.1rem; justify-content: center;">احسب الكمية والتكلفة</button>
 
             <div id="calcResult" class="calc-result"></div>
         </div>
 
     </div>
 
-    <!-- نافذة عرض المنتج لوحده (Popup / Modal) مع زر الطلب بداخله -->
+    <!-- نافذة عرض التفاصيل المنبثقة (Modal) -->
     <div id="productModal" class="modal-overlay" onclick="closeProductModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="closeModalDirect()">&times;</button>
@@ -441,6 +493,133 @@
     </footer>
 
     <script>
+        // كلمة المرور الخاصة بلوحة التحكم (يمكنك تعديلها هنا)
+        const ADMIN_PASS = "mowafy2026";
+        let isAdminLoggedIn = false;
+
+        // المنتجات الأساسية الافتراضية
+        let products = JSON.parse(localStorage.getItem('mowafy_products')) || [
+            {
+                id: 1,
+                title: "سماد مركب عالي النقاء (N-P-K)",
+                price: "450 ج.م / شيكارة",
+                numericPrice: 450,
+                img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80",
+                fullImg: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "<strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br><strong>الاستخدام:</strong> مناسب لجميع المحاصيل بمعدل 5 كجم للفدان.",
+                fullDesc: "<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية.<br><br><strong>طريقة الاستخدام:</strong> مناسب لجميع المحاصيل الحقلية والخضروات بمعدل 5 كجم للفدان رياً مع المياه صباحاً أو قبل الغروب."
+            },
+            {
+                id: 2,
+                title: "مبيد ومخصب عضوي آمن",
+                price: "280 ج.م / لتر",
+                numericPrice: 280,
+                img: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
+                fullImg: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80",
+                shortDesc: "<strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين المناعة.<br><strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء.",
+                fullDesc: "<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور من الأمراض الفطرية.<br><br><strong>طريقة الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء ويرش صباحاً بانتظام للحصول على أفضل نتيجة."
+            }
+        ];
+
+        // عرض المنتجات في الواجهة وتحديث الحاسبة
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const select = document.getElementById('productSelect');
+            
+            grid.innerHTML = '';
+            select.innerHTML = '';
+
+            products.forEach((p, index) => {
+                // كارت المنتج
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-image-container">
+                            <img src="${p.img}" alt="${p.title}">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">${p.title}</h3>
+                            <div class="product-price">${p.price}</div>
+                            <p class="product-specs">${p.shortDesc}</p>
+                            <div class="card-buttons">
+                                <button class="details-btn" onclick="openProductModal('${p.title}', '${p.price}', '${p.fullImg}', '${p.fullDesc.replace(/'/g, "\\'")}')">عرض التفاصيل</button>
+                                <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(p.title)}" target="_blank" class="whatsapp-btn">اطلب الآن</a>
+                            </div>
+                            <button class="delete-btn" id="delBtn_${index}" style="display: ${isAdminLoggedIn ? 'block' : 'none'};" onclick="deleteProduct(${index})">حذف المنتج</button>
+                        </div>
+                    </div>
+                `;
+
+                // خيارات الحاسبة
+                if(p.numericPrice) {
+                    select.innerHTML += `<option value="${p.numericPrice}">${p.title} - ${p.price}</option>`;
+                }
+            });
+        }
+
+        // التحقق من باسورد لوحة التحكم
+        function checkAdminLogin() {
+            const inputPass = document.getElementById('adminPasswordInput').value;
+            if(inputPass === ADMIN_PASS) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('loginBoxSection').style.display = 'none';
+                renderProducts();
+                alert('تم تسجيل الدخول للوحة التحكم بنجاح! يمكنك الآن إضافة أو حذف المنتجات.');
+            } else {
+                alert('كلمة المرور غير صحيحة!');
+            }
+        }
+
+        // إضافة منتج جديد من لوحة التحكم
+        function addNewProduct() {
+            const title = document.getElementById('newTitle').value;
+            const price = document.getElementById('newPrice').value;
+            const img = document.getElementById('newImg').value;
+            const shortDesc = document.getElementById('newShortDesc').value;
+            const fullDesc = document.getElementById('newFullDesc').value;
+
+            if(!title || !price || !img) {
+                alert('الرجاء إدخال اسم المنتج والسعر ورابط الصورة على الأقل.');
+                return;
+            }
+
+            // استخراج رقمي تقريبي للسعر عشان الحاسبة
+            const numericPrice = parseFloat(price.replace(/[^0-9.]/g, '')) || 100;
+
+            const newProd = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                numericPrice: numericPrice,
+                img: img,
+                fullImg: img,
+                shortDesc: shortDesc ? shortDesc : `<strong>المواصفات:</strong> ${title}`,
+                fullDesc: fullDesc ? fullDesc : `<strong>التفاصيل الكاملة:</strong> ${title} عالي الجودة.`
+            };
+
+            products.push(newProd);
+            localStorage.setItem('mowafy_products', JSON.stringify(products));
+            
+            // تفريغ الحقول
+            document.getElementById('newTitle').value = '';
+            document.getElementById('newPrice').value = '';
+            document.getElementById('newImg').value = '';
+            document.getElementById('newShortDesc').value = '';
+            document.getElementById('newFullDesc').value = '';
+
+            renderProducts();
+            alert('تم إضافة ونشر المنتج بنجاح في المتجر!');
+        }
+
+        // حذف منتج
+        function deleteProduct(index) {
+            if(confirm('هل أنت متأكد من حذف هذا المنتج نهائياً؟')) {
+                products.splice(index, 1);
+                localStorage.setItem('mowafy_products', JSON.stringify(products));
+                renderProducts();
+            }
+        }
+
         // فتح نافذة تفاصيل المنتج
         function openProductModal(title, price, imgSrc, desc) {
             document.getElementById('modalTitle').innerText = title;
@@ -448,14 +627,12 @@
             document.getElementById('modalImg').src = imgSrc;
             document.getElementById('modalDesc').innerHTML = desc;
             
-            // ربط زر الواتساب داخل النافذة المنبثقة
             const waUrl = `https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(title)}`;
             document.getElementById('modalWhatsapp').href = waUrl;
 
             document.getElementById('productModal').style.display = 'flex';
         }
 
-        // إغلاق النافذة
         function closeModalDirect() {
             document.getElementById('productModal').style.display = 'none';
         }
@@ -466,7 +643,7 @@
             }
         }
 
-        // حساب الاحتياجات
+        // حاسبة الاحتياجات
         function calculateNeeds() {
             const price = parseFloat(document.getElementById('productSelect').value);
             const area = parseFloat(document.getElementById('landArea').value);
@@ -481,6 +658,11 @@
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = `التكلفة الإجمالية لـ ${area} فدان: <br><span style="color:#2e7d32; font-size: 1.4rem;">${totalCost.toLocaleString()} جنيه مصري</span>`;
         }
+
+        // تشغيل عرض المنتجات أول ما الصفحة تفتح
+        window.onload = function() {
+            renderProducts();
+        };
     </script>
 
 </body>
