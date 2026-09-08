@@ -22,7 +22,7 @@
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .section-title { text-align: center; margin-bottom: 30px; color: #1b4d3e; font-size: 1.8rem; font-weight: 700; }
 
-        /* لوحة التحكم المخفية تظهر تلقائياً لو الرابط آخره #admin */
+        /* لوحة التحكم السرية */
         #adminSection {
             display: none;
             background: #ffffff;
@@ -40,13 +40,32 @@
         .admin-form-group { margin-bottom: 15px; }
         .admin-form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1b4d3e; }
         .admin-form-group input, .admin-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-        .add-product-submit { background-color: #1b4d3e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; }
+        
+        /* تنسيق زر اختيار ملف الصورة من الجهاز أو الكاميرا */
+        .file-input-wrapper {
+            background: #e8f5e9;
+            border: 2px dashed #2e7d32;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .file-input-wrapper input {
+            display: none;
+        }
+        .file-label {
+            color: #1b4d3e;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-product-submit { background-color: #1b4d3e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px; }
         .add-product-submit:hover { background-color: #2e7d32; }
         
         .delete-btn { background-color: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
         .admin-row-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #ddd; }
 
-        /* شبكة المنتجات للعملاء */
+        /* شبكة المنتجات */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -95,7 +114,7 @@
 
     <div class="container">
         
-        <!-- لوحة التحكم السرية (تظهر فقط عند كتابة #admin في الرابط) -->
+        <!-- لوحة التحكم السرية -->
         <div id="adminSection">
             <div id="adminLoginBox" class="admin-login-box">
                 <h3 style="color: #1b4d3e; margin-bottom: 15px;">🔐 لوحة التحكم السرية</h3>
@@ -104,27 +123,37 @@
             </div>
 
             <div id="adminContentArea" class="admin-content-area">
-                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (إضافة وحذف)</h3>
+                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (رفع الصور مباشرة أو من الكاميرا)</h3>
+                
                 <div class="admin-form-group">
                     <label>اسم المنتج:</label>
                     <input type="text" id="newTitle" placeholder="مثال: سماد نيتروجيني">
                 </div>
+                
                 <div class="admin-form-group">
                     <label>السعر (مع الوحدة):</label>
                     <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شيكارة">
                 </div>
+
+                <!-- زر رفع الصورة من الاستوديو أو الكاميرا مباشرة -->
                 <div class="admin-form-group">
-                    <label>رابط الصورة:</label>
-                    <input type="text" id="newImg" placeholder="رابط صورة المنتج">
+                    <label>صورة المنتج:</label>
+                    <div class="file-input-wrapper" onclick="document.getElementById('imageFile').click()">
+                        <span class="file-label" id="fileLabelText">📷 اضغط هنا لاختيار صورة من الاستوديو أو التقاطها بالكاميرا</span>
+                        <input type="file" id="imageFile" accept="image/*" onchange="handleImageSelection(event)">
+                    </div>
                 </div>
+
                 <div class="admin-form-group">
                     <label>المواصفات المختصرة:</label>
                     <textarea id="newShortDesc" placeholder="المواصفات..."></textarea>
                 </div>
+                
                 <div class="admin-form-group">
                     <label>التفاصيل الكاملة:</label>
                     <textarea id="newFullDesc" placeholder="التفاصيل وطريقة الاستخدام..."></textarea>
                 </div>
+                
                 <button class="add-product-submit" onclick="addProduct()">نشر المنتج فوراً</button>
 
                 <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
@@ -135,8 +164,6 @@
         </div>
 
         <h2 class="section-title">قائمة المنتجات والمواصفات</h2>
-        
-        <!-- شبكة المنتجات للعملاء -->
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
@@ -158,6 +185,7 @@
 
     <script>
         const ADMIN_PASS = "mowafy2026";
+        let uploadedImageBase64 = ""; // لتخزين الصورة المختارة كبيانات مباشرة
         
         let products = JSON.parse(localStorage.getItem('mowafy_products')) || [
             {
@@ -165,7 +193,6 @@
                 title: "سماد مركب عالي النقاء (N-P-K)",
                 price: "450 ج.م / شيكارة",
                 img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80",
-                fullImg: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مركب متوازن لتحفيز النمو الخضري والجذري.<br><strong>الاستخدام:</strong> مناسب لجميع المحاصيل بمعدل 5 كجم للفدان.",
                 fullDesc: "<strong>التفاصيل الكاملة:</strong> مركب متوازن عالي النقاء مصمم خصيصاً لتحفيز النمو الخضري والجذري وزيادة الإنتاجية الزراعية."
             },
@@ -174,11 +201,23 @@
                 title: "مبيد ومخصب عضوي آمن",
                 price: "280 ج.م / لتر",
                 img: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
-                fullImg: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80",
                 shortDesc: "<strong>المواصفات:</strong> مستخلص طبيعي لمكافحة الآفات وتحسين المناعة.<br><strong>الاستخدام:</strong> يخلط بمعدل 3 سم لكل لتر ماء.",
                 fullDesc: "<strong>التفاصيل الكاملة:</strong> مستخلص طبيعي 100% لمكافحة الآفات وتحسين مناعة النبات وحماية الجذور."
             }
         ];
+
+        // تحويل الصورة المرفوعة من الموبايل إلى Base64 عشان تخزن بشكل دائم وتظهر فوراً
+        function handleImageSelection(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('fileLabelText').innerText = "✅ تم اختيار الصورة: " + file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImageBase64 = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
         function renderStore() {
             const grid = document.getElementById('productsGrid');
@@ -194,7 +233,7 @@
                             <div class="product-price">${p.price}</div>
                             <p class="product-specs">${p.shortDesc}</p>
                             <div class="card-buttons">
-                                <button class="details-btn" onclick="openModal('${p.title}', '${p.price}', '${p.fullImg || p.img}', '${p.fullDesc.replace(/'/g, "\\'")}')">التفاصيل</button>
+                                <button class="details-btn" onclick="openModal('${p.title}', '${p.price}', '${p.img}', '${p.fullDesc.replace(/'/g, "\\'")}')">التفاصيل</button>
                                 <a href="https://wa.me/2001015421512?text=أرغب%20في%20طلب%20${encodeURIComponent(p.title)}" target="_blank" class="whatsapp-btn">اطلب الآن</a>
                             </div>
                         </div>
@@ -203,7 +242,6 @@
             });
         }
 
-        // فحص لوحة التحكم عند فتح الرابط بـ #admin
         window.onload = function() {
             renderStore();
             if(window.location.hash === "#admin") {
@@ -238,29 +276,35 @@
         function addProduct() {
             const title = document.getElementById('newTitle').value;
             const price = document.getElementById('newPrice').value;
-            const img = document.getElementById('newImg').value;
-            if(!title || !price || !img) {
-                alert('املأ الحقول الأساسية (الاسم، السعر، الصورة)');
+            
+            if(!title || !price || !uploadedImageBase64) {
+                alert('الرجاء إدخال اسم المنتج، السعر، ورفع صورة المنتج من الكاميرا أو الاستوديو!');
                 return;
             }
+
             products.push({
                 id: Date.now(),
                 title: title,
                 price: price,
-                img: img,
-                fullImg: img,
-                shortDesc: document.getElementById('newShortDesc').value || title,
-                fullDesc: document.getElementById('newFullDesc').value || title
+                img: uploadedImageBase64, // استخدام الصورة المرفوعة من الموبايل
+                shortDesc: document.getElementById('newShortDesc').value || `<strong>المواصفات:</strong> ${title}`,
+                fullDesc: document.getElementById('newFullDesc').value || `<strong>التفاصيل الكاملة:</strong> ${title}`
             });
+
             localStorage.setItem('mowafy_products', JSON.stringify(products));
+            
+            // إعادة التعيين
             document.getElementById('newTitle').value = '';
             document.getElementById('newPrice').value = '';
-            document.getElementById('newImg').value = '';
             document.getElementById('newShortDesc').value = '';
             document.getElementById('newFullDesc').value = '';
+            document.getElementById('imageFile').value = '';
+            uploadedImageBase64 = "";
+            document.getElementById('fileLabelText').innerText = "📷 اضغط هنا لاختيار صورة من الاستوديو أو التقاطها بالكاميرا";
+
             renderStore();
             loadAdminList();
-            alert('تم نشر المنتج بنجاح!');
+            alert('تم نشر المنتج وصورته بنجاح في المتجر!');
         }
 
         function deleteProd(idx) {
