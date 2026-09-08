@@ -41,22 +41,26 @@
         .admin-form-group label { display: block; margin-bottom: 5px; font-weight: 700; color: #1b4d3e; }
         .admin-form-group input, .admin-form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
         
-        /* تنسيق زر اختيار ملف الصورة من الجهاز أو الكاميرا */
-        .file-input-wrapper {
+        /* تصميم صندوق رفع الصورة المباشر */
+        .image-upload-box {
             background: #e8f5e9;
             border: 2px dashed #2e7d32;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
             border-radius: 8px;
             cursor: pointer;
+            transition: background 0.3s;
         }
-        .file-input-wrapper input {
+        .image-upload-box:hover {
+            background: #d0edd1;
+        }
+        .image-upload-box input {
             display: none;
         }
-        .file-label {
+        .image-upload-text {
             color: #1b4d3e;
-            font-weight: bold;
-            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
         }
 
         .add-product-submit { background-color: #1b4d3e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px; }
@@ -65,7 +69,7 @@
         .delete-btn { background-color: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; font-weight: bold; }
         .admin-row-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #ddd; }
 
-        /* شبكة المنتجات */
+        /* شبكة المنتجات للعملاء */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -123,7 +127,7 @@
             </div>
 
             <div id="adminContentArea" class="admin-content-area">
-                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (رفع الصور مباشرة أو من الكاميرا)</h3>
+                <h3 style="color: #1b4d3e; margin-bottom: 20px;">🛠️ إدارة المنتجات (رفع الصور مباشرة من الاستوديو أو الكاميرا)</h3>
                 
                 <div class="admin-form-group">
                     <label>اسم المنتج:</label>
@@ -135,12 +139,12 @@
                     <input type="text" id="newPrice" placeholder="مثال: 500 ج.م / شيكارة">
                 </div>
 
-                <!-- زر رفع الصورة من الاستوديو أو الكاميرا مباشرة -->
+                <!-- خانة رفع الصورة المباشرة -->
                 <div class="admin-form-group">
                     <label>صورة المنتج:</label>
-                    <div class="file-input-wrapper" onclick="document.getElementById('imageFile').click()">
-                        <span class="file-label" id="fileLabelText">📷 اضغط هنا لاختيار صورة من الاستوديو أو التقاطها بالكاميرا</span>
-                        <input type="file" id="imageFile" accept="image/*" onchange="handleImageSelection(event)">
+                    <div class="image-upload-box" onclick="document.getElementById('productImageFile').click()">
+                        <span class="image-upload-text" id="uploadStatusText">📷 اضغط هنا لالتقاط صورة بالكاميرا أو اختيارها من الاستوديو</span>
+                        <input type="file" id="productImageFile" accept="image/*" onchange="processImageFile(event)">
                     </div>
                 </div>
 
@@ -154,7 +158,7 @@
                     <textarea id="newFullDesc" placeholder="التفاصيل وطريقة الاستخدام..."></textarea>
                 </div>
                 
-                <button class="add-product-submit" onclick="addProduct()">نشر المنتج فوراً</button>
+                <button class="add-product-submit" onclick="addNewProductItem()">نشر المنتج فوراً</button>
 
                 <div style="margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
                     <h4 style="color: #1b4d3e; margin-bottom: 10px;">المنتجات الحالية:</h4>
@@ -185,7 +189,7 @@
 
     <script>
         const ADMIN_PASS = "mowafy2026";
-        let uploadedImageBase64 = ""; // لتخزين الصورة المختارة كبيانات مباشرة
+        let capturedImageData = ""; // لتخزين كود الصورة المرفوعة
         
         let products = JSON.parse(localStorage.getItem('mowafy_products')) || [
             {
@@ -206,14 +210,14 @@
             }
         ];
 
-        // تحويل الصورة المرفوعة من الموبايل إلى Base64 عشان تخزن بشكل دائم وتظهر فوراً
-        function handleImageSelection(event) {
+        // معالجة ملف الصورة المرفوع من الكاميرا أو الاستوديو
+        function processImageFile(event) {
             const file = event.target.files[0];
             if (file) {
-                document.getElementById('fileLabelText').innerText = "✅ تم اختيار الصورة: " + file.name;
+                document.getElementById('uploadStatusText').innerText = "✅ تم تحميل الصورة بنجاح: " + file.name;
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    uploadedImageBase64 = e.target.result;
+                    capturedImageData = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -273,12 +277,12 @@
             });
         }
 
-        function addProduct() {
+        function addNewProductItem() {
             const title = document.getElementById('newTitle').value;
             const price = document.getElementById('newPrice').value;
             
-            if(!title || !price || !uploadedImageBase64) {
-                alert('الرجاء إدخال اسم المنتج، السعر، ورفع صورة المنتج من الكاميرا أو الاستوديو!');
+            if(!title || !price || !capturedImageData) {
+                alert('الرجاء إدخال اسم المنتج، السعر، واختيار صورة المنتج من الكاميرا أو الاستوديو!');
                 return;
             }
 
@@ -286,25 +290,25 @@
                 id: Date.now(),
                 title: title,
                 price: price,
-                img: uploadedImageBase64, // استخدام الصورة المرفوعة من الموبايل
+                img: capturedImageData,
                 shortDesc: document.getElementById('newShortDesc').value || `<strong>المواصفات:</strong> ${title}`,
                 fullDesc: document.getElementById('newFullDesc').value || `<strong>التفاصيل الكاملة:</strong> ${title}`
             });
 
             localStorage.setItem('mowafy_products', JSON.stringify(products));
             
-            // إعادة التعيين
+            // تصفير الحقول
             document.getElementById('newTitle').value = '';
             document.getElementById('newPrice').value = '';
             document.getElementById('newShortDesc').value = '';
             document.getElementById('newFullDesc').value = '';
-            document.getElementById('imageFile').value = '';
-            uploadedImageBase64 = "";
-            document.getElementById('fileLabelText').innerText = "📷 اضغط هنا لاختيار صورة من الاستوديو أو التقاطها بالكاميرا";
+            document.getElementById('productImageFile').value = '';
+            capturedImageData = "";
+            document.getElementById('uploadStatusText').innerText = "📷 اضغط هنا لالتقاط صورة بالكاميرا أو اختيارها من الاستوديو";
 
             renderStore();
             loadAdminList();
-            alert('تم نشر المنتج وصورته بنجاح في المتجر!');
+            alert('تم نشر المنتج بنجاح في المتجر!');
         }
 
         function deleteProd(idx) {
